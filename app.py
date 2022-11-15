@@ -2,14 +2,19 @@ from flask import Flask
 from flask import render_template
 
 app = Flask(__name__)
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 lances = dict({})
 
 @app.route("/")
 def home():
-    return render_template('base.html')
+    return render_template('regras.html')
 
-@app.route("/lance/<string:valor>", methods =['POST'])
+@app.route("/lances")
+def tela_lances():
+    return render_template('tela-lances.html')
+
+@app.route("/lances/<string:valor>", methods =['POST'])
 def fazer_lance(valor):
     
     try:

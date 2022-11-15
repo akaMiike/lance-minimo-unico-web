@@ -6,20 +6,17 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-      <title>
-          {%block title%}
-
-          {%endblock%}
-      </title>
+      <title>Jogo do Lance Mínimo Único</title>
+      <link rel = "icon" href="/static/coin.png" type = "image/x-icon">
    </head>
    <body>
-      <!-- Navbar here -->
+   <!-- Navbar here -->
     <nav class="navbar navbar-light navbar-expand-md justify-content-md-center justify-content-start" style="background-color: rgb(58, 102, 102);">
       <div class="navbar-collapse collapse justify-content-between align-items-center w-100">
          <ul class="navbar-nav mx-auto text-md-center text-left">
-            <li class="nav-item">
-               <a class="navbar-brand" style="color:gold; font-size: 30px !important; margin:auto;" href="{{url_for('home')}}"><b>LANCE</b>
-               <img src="{{url_for('static', filename='ezgif.com-gif-maker.gif')}}" alt="coin" width="40" height="40" style="margin-top:-5px;">
+            <li class="nav-item p-0">
+               <a class="navbar-brand" style="color:gold; font-size: 25px !important; margin:auto;" href="{{url_for('home')}}"><b>LANCE</b>
+               <img src="{{url_for('static', filename='ezgif.com-gif-maker.gif')}}" alt="coin" width="30" height="30" style="margin-top:-5px;">
                <b>MÍNIMO</b>
                </a>
             </li>
@@ -27,10 +24,11 @@
       </div>
       
     </nav>
-    
-    {%block content%}
+   <div class="position-relative overflow-hidden p-5 p-md-5 m-md-3 text-center" style="color:white;background-color: rgba(58, 104, 104, 0.50); ">
+      {%block content%}
 
-    {%endblock%}
+      {%endblock%}
+   </div>
 
       <!-- Optional JavaScript -->
       <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -43,6 +41,9 @@
       body {
         background-color:#aab7ce;
         color: white
+      }
+      li{
+         padding:10px;
       }
    </style>
 </html>
