@@ -18,14 +18,15 @@
                     <li>
                         <span class="lead font-weight-normal">O usuário poderá fazer quantos lances quiser por rodada.</span> 
                     </li>
-                            
-                    <li>
-                        <span class="lead font-weight-normal">O vencedor será anunciado ao fim de cada rodada.</span> 
-                    </li>
 
                     <li>
-                        <span class="lead font-weight-normal">Não é permitido reembolso após o término da rodada.</span> 
+                        <span class="lead font-weight-normal">Em cada rodada poderá ser feita até 10 lances.</span> 
                     </li>
+                            
+                    <li>
+                        <span class="lead font-weight-normal">A rodada terminará quando o máximo de lances for atingido.</span> 
+                    </li>
+
 
                 </ol>
             </div>
@@ -34,3 +35,19 @@
     </div>
 
 {%endblock%}
+
+<script type="text/javascript">
+    const intervalID = setInterval(update_values, 1000);
+    function update_values() {
+      $.getJSON(
+        $SCRIPT_ROOT + "/timer",
+        data => {
+          $("#timer").text(data.result);
+          if (data.result === "0:00:00") {
+            clearInterval(intervalID);
+            window.location.replace($SCRIPT_ROOT + '/lances');
+          }
+        }
+      )
+    }
+  </script>
