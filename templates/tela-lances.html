@@ -9,12 +9,12 @@
   const intervalID = setInterval(update_values, 1000);
   function update_values() {
     $.getJSON(
-      $SCRIPT_ROOT + "/timer",
+      $SCRIPT_ROOT + "/timer/rodada",
       data => {
         $("#timer").text(data.result);
         if (data.result === "0:00:00") {
           clearInterval(intervalID);
-          window.location.replace($SCRIPT_ROOT + '/lances');
+          window.location.replace($SCRIPT_ROOT + '/lances/resultado');
         }
       }
     )
@@ -43,7 +43,25 @@
 <div style="margin-top:-15px; margin-bottom:20px;">
     <span class="h1">Tempo restante até o fim da rodada</span><br>
     <span id="timer" style="font-size:xx-large"></span>
-</div>
+  </div>
+  
+  {% with messages = get_flashed_messages() %}
+    {%if messages%}
+      {%for message in messages%}
+        <div id="alert" style="margin: 0 auto; width: 40%; margin-bottom: 20px;" class="alert alert-success">
+          <h5>{{message}}</h5>
+        </div>
+      {% endfor %}
+  
+      <script>
+        if(document.getElementById('alert') !== null)
+        setTimeout(() => {
+          $('#alert').fadeOut("slow");
+        }, 2000);
+      </script>
+  
+  {% endif %}
+  {% endwith %}
 
 <div style="background-color:rgba(58, 104, 104, 0.70); margin: 0 auto; width: 80%; margin-bottom:20px" class="p-2">
   <div class="row">
@@ -58,11 +76,11 @@
       <div style="padding-top:10px">
         <form class="form-group align-self-center" action="{{url_for('fazer_lance')}}" method="POST">
           <div class="form-group m-2">
-            <input type="text" class="form-control form-control-sm m-1" id="inputNome" placeholder="Preencha seu nome" name="Nome">
+            <input type="text" class="form-control form-control-sm m-1" id="inputNome" placeholder="Preencha seu nome" name="Nome" required>
           </div>
       
           <div class="form-group m-2">
-            <input type="number" class="form-control form-control-sm m-1" step="0.01" id="inputLance" placeholder="Insira seu lance" name="Lance">
+            <input type="number" class="form-control form-control-sm m-1" step="0.01" id="inputLance" placeholder="Insira seu lance" name="Lance" required>
           </div>
       
           <button id="submit_lance" type="submit" class="btn btn-primary m-2" value="submit">Fazer lance!</button>
@@ -80,23 +98,5 @@
   </div>
 </div>
 
-
-{% with messages = get_flashed_messages() %}
-  {%if messages%}
-    {%for message in messages%}
-      <div id="alert" style="margin: 0 auto; width: 40%; margin-bottom: 20px;" class="alert alert-success">
-        <h5>{{message}}</h5>
-      </div>
-    {% endfor %}
-
-    <script>
-      if(document.getElementById('alert') !== null)
-      setTimeout(() => {
-        $('#alert').fadeOut("slow");
-      }, 2000);
-    </script>
-
-{% endif %}
-{% endwith %}
 
 {%endblock%}

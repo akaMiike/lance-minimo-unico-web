@@ -1,0 +1,47 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+
+<script>
+    $SCRIPT_ROOT = {{ request.script_root|tojson }};
+</script>
+
+<script type="text/javascript">
+    const intervalID = setInterval(update_values, 1000);
+    function update_values() {
+      $.getJSON(
+        $SCRIPT_ROOT + "/timer/resultado",
+        data => {
+          $("#timer_retorno").text(data.result);
+          if (data.result === "0:00:00") {
+            clearInterval(intervalID);
+            window.location.replace($SCRIPT_ROOT + '/');
+          }
+        }
+      )
+    }
+  </script>
+
+{%if lance != -1%}
+    <div style="margin-top:-15px; margin-bottom:20px; background-color:rgba(58, 104, 104, 0.70); margin: 0 auto; width: 70%; margin-bottom:20px" class="p-2">
+        <span class="h1" style="color: gold"><b>O vencedor dessa rodada foi: {{nome}}</b></span><br>
+        <p class="h4"><b>Valor do lance mínimo único: R${{lance}}</b></p>
+    </div>
+    
+    <div>
+        <h1 style="color: gold; margin:10px;" class="h2"><b>Parabéns pelo prêmio! </b></h1>
+        <div>
+            <img src={{premio}} width="30%" height="30%" ><br>
+        </div>
+    </div>
+    
+{%else%}
+    <span style="margin-top:-15px; margin-bottom:20px; background-color:rgba(58, 104, 104, 0.70); margin: 0 auto; width: 60%; margin-bottom:20px" class="p-2 h1">Não houve ganhadores nessa rodada!</span><br>
+{%endif%}
+
+    <div style="margin-top: 10px;">
+        <span class="h3">Retornando à tela inicial em: </span>
+        <span class="h4" id="timer_retorno"></span>
+    </div>
+
+{% endblock %}
