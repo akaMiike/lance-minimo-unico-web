@@ -1,13 +1,14 @@
 from flask import Flask
-from flask import render_template, jsonify
+from flask import render_template, jsonify, request, flash, redirect, url_for
 import random, datetime
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.secret_key = 'lances12345'
 
 lances = dict({})
 
-tempo_restante_rodada = 10
+tempo_restante_rodada =99999
 
 premios = {
     "/static/carrinho.png" : "Carrinho da hotwheels 0 KM",
@@ -16,14 +17,25 @@ premios = {
 
 premio_rodada = []
 
+@app.route("/lances/maior-lance")
+def obter_maior_lance_unico():
+    global lances
+    lance_maximo_unico = -1
+    
+    for key,value in lances.items():
+        if(len(value) == 1 and (lance_maximo_unico == -1 or key > lance_maximo_unico)):
+            lance_maximo_unico = key
+
+    return jsonify({"result": lance_maximo_unico})
+
 @app.route("/timer")
 def timer():
     global tempo_restante_rodada, premio_rodada
     
     if(tempo_restante_rodada == 0):
-        tempo_restante_rodada = 10
+        tempo_restante_rodada = 9999
         premio_rodada = []
-        
+    
     tempo_restante_result = str(datetime.timedelta(seconds = (tempo_restante_rodada-1)))
     tempo_restante_rodada = tempo_restante_rodada - 1
 
@@ -45,23 +57,28 @@ def tela_lances():
     else:
         premio_atual = premio_rodada[0]
         descricao = premio_rodada[1]
-        
+    
     return render_template('tela-lances.html', premio=premio_atual, descricao=descricao)
 
-@app.route("/lances/<string:valor>", methods =['POST'])
-def fazer_lance(valor):
+@app.route("/lances", methods =['POST'])
+def fazer_lance():
+    global premio_rodada
+    
+    nome = request.form['Nome']
+    valor_lance = request.form['Lance']
     
     try:
-        valor = float(valor)
+        valor_lance = float(valor_lance)
     except ValueError:
         return ('',404)
     
-    if(valor not in lances):
-        lances[valor] = 1
+    if(valor_lance not in lances):
+        lances[valor_lance] = [nome]
     else:
-        lances[valor] += 1
-        
-    return ('',201)
+        lances[valor_lance].append(nome)
+    
+    flash("Lance submetido com sucesso!")
+    return redirect(url_for('tela_lances'))
     
 @app.route("/menor-lance")
 def obter_menor_lance_unico():

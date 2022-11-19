@@ -5,7 +5,6 @@
     $SCRIPT_ROOT = {{ request.script_root|tojson }};
 </script>
 
-
 <script type="text/javascript">
   const intervalID = setInterval(update_values, 1000);
   function update_values() {
@@ -22,32 +21,82 @@
   }
 </script>
   
-  <div style="margin-top:-15px; margin-bottom:20px;">
+<script type="text/javascript" defer>
+  $(document).ready(function() {
+      $.getJSON(
+        $SCRIPT_ROOT + "/lances/maior-lance",
+        data => {
+          console.log(data.result)
+          if (data.result !== -1) {
+            $("#maior_lance").text("O maior lance único foi de R$" + data.result).wrapInner("<b>");
+          }
+          else{
+            $("#maior_lance").text("Não houve nenhum lance máximo único ainda").wrapInner("<b>")
+          }
+        }
+      )
+    }
+  )
+  
+</script>
+
+<div style="margin-top:-15px; margin-bottom:20px;">
     <span class="h1">Tempo restante até o fim da rodada</span><br>
     <span id="timer" style="font-size:xx-large"></span>
+</div>
+
+<div style="background-color:rgba(58, 104, 104, 0.70); margin: 0 auto; width: 80%; margin-bottom:20px" class="p-2">
+  <div class="row">
+    <div class="col-md" style="border-bottom: 1px solid white;">
+        <h2 id="maior_lance"></h2>
+    </div>
   </div>
 
-<div style="background-color:rgba(58, 104, 104, 0.70); margin: 0 auto; width: 50%; margin-bottom:20px;" class="p-2">
-    <h1 style="color: gold; margin:10px;" class="h2"><b>A premiação de hoje é: </b></h1>
-    <div>
-        <img src={{premio}} width="50%" height="50%">
-        <p style="color:black; padding-top:10px;"><em>{{descricao}}</em></p>
+  <div class="row">
+    <div class="col-md align-self-center" >
+      <p class="h3" style="color: gold"><b>FAÇA SEU LANCE !</b></p>
+      <div style="padding-top:10px">
+        <form class="form-group align-self-center" action="{{url_for('fazer_lance')}}" method="POST">
+          <div class="form-group m-2">
+            <input type="text" class="form-control form-control-sm m-1" id="inputNome" placeholder="Preencha seu nome" name="Nome">
+          </div>
+      
+          <div class="form-group m-2">
+            <input type="number" class="form-control form-control-sm m-1" step="0.01" id="inputLance" placeholder="Insira seu lance" name="Lance">
+          </div>
+      
+          <button id="submit_lance" type="submit" class="btn btn-primary m-2" value="submit">Fazer lance!</button>
+        </form>
+      </div>
     </div>
+
+    <div class="col-md" style="border-left:1px solid white;">
+      <h1 style="color: gold; margin:10px;" class="h2"><b>A premiação da rodada é: </b></h1>
+      <div>
+          <img src={{premio}} width="80%" height="80%"><br>
+          <p style="color:black; margin-top:10px"><em>{{descricao}}</em></p>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div style="margin: 0 auto; width: 40%;" class=" text-center">
-  <p class="h2" style="color:yellow;"><b>FAÇA SEU LANCE !</b></p>
-  <form class="form-group" style="margin-top:20px;">
-    <div class="form-group m-2">
-      <input type="text" class="form-control m-1" id="inputNome" placeholder="Preencha seu nome">
-    </div>
 
-    <div class="form-group m-2">
-      <input type="number" class="form-control m-1" step="0.01" id="inputLance" placeholder="Insira seu lance">
-    </div>
+{% with messages = get_flashed_messages() %}
+  {%if messages%}
+    {%for message in messages%}
+      <div id="alert" style="margin: 0 auto; width: 40%; margin-bottom: 20px;" class="alert alert-success">
+        <h5>{{message}}</h5>
+      </div>
+    {% endfor %}
 
-    <button type="submit" class="btn btn-primary m-2" onclick="">Fazer lance!</button>
-  </form>
-</div>
+    <script>
+      if(document.getElementById('alert') !== null)
+      setTimeout(() => {
+        $('#alert').fadeOut("slow");
+      }, 2000);
+    </script>
+
+{% endif %}
+{% endwith %}
 
 {%endblock%}
