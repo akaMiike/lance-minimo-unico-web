@@ -13,7 +13,9 @@ tempo_restante_retornar_inicio = 10
 
 premios = {
     "/static/carrinho.png" : "Carrinho da hotwheels 0 KM",
-    "/static/nota10.png" : "Notas 10 em todas as disciplinas pelo resto do curso"
+    "/static/nota10.png" : "Notas 10 em todas as disciplinas pelo resto do curso",
+    "/static/ru.jpeg": "Almoço e janta no RU grátis por 10 anos",
+    "/static/pc-gamer.webp": "PC Gamer"
 }
 
 premio_rodada = []
