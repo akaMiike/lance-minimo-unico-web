@@ -8,7 +8,7 @@ app.secret_key = 'lances12345'
 
 lances = dict({})
 
-tempo_restante_rodada = 10
+tempo_restante_rodada = 300
 tempo_restante_retornar_inicio = 10
 
 premios = {
@@ -25,7 +25,7 @@ def timer_resultado():
     tempo_restante_result = str(datetime.timedelta(seconds = (tempo_restante_retornar_inicio)))
     
     if(tempo_restante_retornar_inicio == 0):
-        tempo_restante_rodada = 10
+        tempo_restante_rodada = 300
         tempo_restante_retornar_inicio = 10
         premio_rodada = []
         lances = {}
