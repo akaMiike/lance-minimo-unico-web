@@ -24,4 +24,4 @@ Instale o flask, caso não tenha:
 Acesse o diretório da aplicação e execute a aplicação:
 `cd lance-minimo-unico-web/ && flask run`
 
-A aplicação também pode ser acessada publicamente pelo [Repl.it](https://replit.com/@Michael_Nichola/lance-minimo-unico-web)
+A aplicação também pode ser acessada publicamente pelo [Repl.it](https://replit.com/@mike-nss/lance-minimo-unico-web)
